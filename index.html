@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Little Forecast</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase.js"></script>
+    <script src="js/app.js" defer></script>
+  </head>
+  <body>
+    <div class="app-window">
+      <header class="title-bar">
+        <div class="window-controls" aria-label="Window decoration">
+          <span class="dot red"></span>
+          <span class="dot yellow"></span>
+          <span class="dot green"></span>
+        </div>
+        <div class="brand">
+          <img src="assets/icons/purple_cloud.png" alt="" />
+          <span>Little Forecast</span>
+        </div>
+      </header>
+
+      <div class="app-layout">
+        <aside class="sidebar">
+          <nav aria-label="Main navigation">
+            <a class="nav-item active" href="#home"
+              ><img src="assets/icons/home.png" alt="" /> <span>Home</span></a
+            >
+            <a class="nav-item" href="#saved"
+              ><img src="assets/icons/saved.png" alt="" />
+              <span>Saved Locations</span></a
+            >
+            <a class="nav-item" href="#history"
+              ><img src="assets/icons/history.png" alt="" />
+              <span>History</span></a
+            >
+            <a class="nav-item" href="#export"
+              ><img src="assets/icons/export.png" alt="" />
+              <span>Export Data</span></a
+            >
+
+            <a class="nav-item" href="#about">
+              <span>About</span>
+            </a>
+          </nav>
+        </aside>
+        <main>
+          <!-- ===== ABOUT PAGE ===== -->
+          <section id="about" class="page-section about-page">
+            <div class="about-header">
+              <h2>About Little Forecast</h2>
+              <p>Your little corner of the world, one forecast at a time.</p>
+            </div>
+
+            <div class="about-card">
+              <h3>About the Developer</h3>
+              <p>
+                Hello! I'm <strong>Samia Hasan</strong>, the creator of Little
+                Forecast, a pixel-art weather application designed to make
+                checking the weather simple, useful, and enjoyable.
+              </p>
+            </div>
+
+            <div class="about-card">
+              <h3>About Product Manager Accelerator</h3>
+              <p>
+                The Product Manager Accelerator Program is designed to support
+                PM professionals through every stage of their careers. From
+                students looking for entry-level jobs to Directors looking to
+                take on a leadership role, our program has helped over hundreds
+                of students fulfil their career aspirations. Our Product Manager
+                Accelerator community are ambitious and committed. Through our
+                program they have learnt, honed and developed new PM and
+                leadership skills, giving them a strong foundation for their
+                future endeavors. Some examples of services we offer: 🚀 PMA Pro
+                🚀 AI PM Bootcamp 🚀 PMA Power Skills 🚀 PMA Leader
+              </p>
+
+              <a
+                class="about-link"
+                href="https://www.pmaccelerator.io/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Learn more about us ↗
+              </a>
+            </div>
+
+            <div class="about-card">
+              <h3>About This Project</h3>
+              <p>
+                Little Forecast uses weather API data to display current
+                conditions and forecasts. It also supports saved locations,
+                weather search history, historical weather records, database
+                operations, CSV export, and a location map.
+              </p>
+            </div>
+          </section>
+
+          <section id="home" class="main-content page-section active">
+            <form id="search-form" class="search-row">
+              <label class="sr-only" for="location-input"
+                >Search location</label
+              >
+              <input
+                id="location-input"
+                type="text"
+                placeholder="Search city, postcode or landmark"
+                required
+              />
+              <button type="submit" class="search-button">
+                <img src="assets/icons/search.png" alt="Search" />
+              </button>
+            </form>
+
+            <div class="location-action">
+              <button id="current-location" class="secondary-button">
+                <img src="assets/icons/location.png" alt="" />
+                Use my location
+              </button>
+            </div>
+
+            <p id="status-message" role="status" aria-live="polite"></p>
+
+            <section class="weather-card" aria-label="Current weather">
+              <div class="main-weather">
+                <img
+                  id="weather-icon"
+                  class="weather-icon"
+                  src="assets/icons/sunny.png"
+                  alt="Sunny"
+                />
+                <div>
+                  <p id="weather-location" class="location-name">Doha, Qatar</p>
+                  <p id="weather-date" class="muted">Current weather</p>
+                  <p class="temperature"><span id="temperature">29</span>°C</p>
+                  <p id="weather-condition">Sunny</p>
+                </div>
+              </div>
+
+              <div class="weather-details">
+                <div class="detail">
+                  <img src="assets/icons/temp.png" alt="" />
+                  <div>
+                    <span>Feels Like</span><strong id="feels-like">32°C</strong>
+                  </div>
+                </div>
+                <div class="detail">
+                  <img src="assets/icons/tear_drop.png" alt="" />
+                  <div>
+                    <span>Humidity</span><strong id="humidity">58%</strong>
+                  </div>
+                </div>
+                <div class="detail">
+                  <img src="assets/icons/wind.png" alt="" />
+                  <div><span>Wind</span><strong id="wind">12 km/h</strong></div>
+                </div>
+              </div>
+            </section>
+
+            <section class="forecast-section">
+              <h2>☷ &nbsp; 5-Day Forecast</h2>
+              <div id="forecast-list" class="forecast-grid"></div>
+            </section>
+
+            <!-- ===== LOCATION MAP ===== -->
+            <div class="location-map-section">
+              <div class="map-heading">
+                <h2>Explore Location</h2>
+                <p>View your searched location on the map</p>
+              </div>
+
+              <div class="map-container">
+                <iframe
+                  id="weather-map"
+                  title="Map of searched location"
+                  loading="lazy"
+                  referrerpolicy="no-referrer-when-downgrade"
+                  allowfullscreen
+                >
+                </iframe>
+              </div>
+            </div>
+          </section>
+          <section id="saved" class="saved-page page-section">
+            <div class="saved-heading">
+              <h2>
+                <span class="heading-bookmark">▮</span>
+                Saved Locations
+              </h2>
+
+              <button
+                id="add-location-btn"
+                class="add-location-btn"
+                type="button"
+              >
+                <span class="plus-icon">+</span>
+                Add Location
+              </button>
+            </div>
+
+            <form id="add-location-form" class="add-location-form" hidden>
+              <input
+                id="saved-location-input"
+                type="text"
+                placeholder="Search a city, e.g. Tokyo"
+                aria-label="Location to save"
+                required
+              />
+              <button type="submit">Search & Add</button>
+              <button id="cancel-add-location" type="button">Cancel</button>
+            </form>
+
+            <p id="saved-status" role="status" aria-live="polite"></p>
+
+            <div id="saved-locations-list" class="saved-locations-list"></div>
+          </section>
+          <section id="history" class="history-page page-section">
+            <div class="history-heading">
+              <h2>History</h2>
+              <button id="clear-history-btn" type="button">Clear All</button>
+            </div>
+
+            <p id="history-status"></p>
+
+            <div id="history-list" class="history-list"></div>
+          </section>
+          <section id="export" class="page-section export-page">
+            <h2>Weather Records</h2>
+            <p>Save and review weather data for a location and date range.</p>
+
+            <form id="record-form">
+              <label for="record-location">Location</label>
+              <input
+                id="record-location"
+                type="text"
+                placeholder="e.g. Doha"
+                required
+              />
+
+              <label for="record-start">Start date</label>
+              <input id="record-start" type="date" required />
+
+              <label for="record-end">End date</label>
+              <input id="record-end" type="date" required />
+
+              <button type="submit" id="save-record-btn">
+                Save weather record
+              </button>
+            </form>
+
+            <p id="record-status" role="status"></p>
+
+            <button id="export-csv-btn" type="button">
+              Export Records as CSV
+            </button>
+
+            <h3>Saved database records</h3>
+            <div id="database-records">
+              <p>Loading records...</p>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+  </body>
+</html>
