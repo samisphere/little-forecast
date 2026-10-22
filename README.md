@@ -90,13 +90,15 @@ little-forecast/
 
 ## 📦 Dependencies
 
-The application uses browser-native HTML, CSS, and JavaScript, together with external APIs and the Supabase JavaScript client loaded through a CDN.
+Little Forecast uses HTML, CSS, and JavaScript, along with the Open-Meteo APIs, a Google Maps embed, and the Supabase JavaScript client loaded through a CDN.
 
-No Python packages or Node.js package installation are required for the current setup. Therefore, a Python `requirements.txt` file is not applicable.
+To run the application locally, open the project in Visual Studio Code and launch `index.html` using Live Server.
+
+The repository includes `package.json` and `package-lock.json` for the project's Node.js package configuration.
 
 ## 👩‍💻 Developer
 
-**YOUR NAME**
+**Samia Hasan**
 
 Created as a weather application project demonstrating frontend development, API integration, database operations, data validation, and data export.
 
